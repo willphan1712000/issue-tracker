@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { createIssueSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
+import ErrorMsg from '@/app/components/ErrorMsg';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -40,13 +41,13 @@ const NewIssuePage = () => {
         }
       })}>
         <TextField.Root radius="full" placeholder="Title" {...register("title")}/>
-        {errors.title && <Text color="red" as="p">{errors.title.message}</Text>}
+        <ErrorMsg>{errors.title?.message}</ErrorMsg>
         <Controller 
           name="description"
           control={control}
           render={({field}) => <SimpleMDE placeholder='description' {...field}/>}
         />
-        {errors.description && <Text color="red" as="p">{errors.description.message}</Text>}
+        <ErrorMsg>{errors.description?.message}</ErrorMsg>
         <Button>Summit new issue</Button>
       </form>
     </div>
