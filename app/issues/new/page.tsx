@@ -13,10 +13,12 @@ import { useState } from 'react';
 import { createIssueSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMsg from '@/app/components/ErrorMsg';
+import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
+  const [isSubmitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
   const {register, control, handleSubmit, formState: {errors}} = useForm<IssueForm>({
@@ -34,6 +36,7 @@ const NewIssuePage = () => {
       )}
       <form className='space-y-3' onSubmit={handleSubmit(async (data) => {
         try {
+          setSubmitting(true);
           const r = await axios.post('/api/issues', data);
           router.push('/issues');
         } catch (error) {
@@ -48,7 +51,7 @@ const NewIssuePage = () => {
           render={({field}) => <SimpleMDE placeholder='description' {...field}/>}
         />
         <ErrorMsg>{errors.description?.message}</ErrorMsg>
-        <Button>Summit new issue</Button>
+        <Button disabled={isSubmitting}>Summit new issue {isSubmitting && <Spinner />}</Button>
       </form>
     </div>
   )
