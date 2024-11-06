@@ -5,14 +5,14 @@ import { Issue, User } from '@prisma/client'
 import { Select } from '@radix-ui/themes'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import toast, {Toaster} from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 
 const Assignment = ({ issue }: { issue: Issue }) => {
   // Fetch data using React Query to cache data
   const {data: users, error, isLoading} = useQuery<User[]>({
     queryKey: ['users'],
     queryFn: () => axios.get('/api/users').then(res => res.data),
-    staleTime: 60 * 1000, //60s
+    staleTime: 60 * 1000, //60s, depending on the application and requirements
     retry: 3
   })
 
@@ -32,17 +32,19 @@ const Assignment = ({ issue }: { issue: Issue }) => {
   //   fetchUsers()
   // }, [])
 
+  const assignIssue = (userId: string) => {
+    const ruserId = userId !== "null" ? userId : null;
+    axios.patch('/api/issues/' + issue.id, {
+      assignment: ruserId
+    }).catch(() => {
+      console.log("Cancelled")
+      toast.error('Changes could not be saved')
+    })
+  }
+
   return (
     <>
-      <Select.Root defaultValue={issue.assignmentId || "null"} onValueChange={(userId) => {
-        const ruserId = userId !== "null" ? userId : null;
-        axios.patch('/api/issues/' + issue.id, {
-          assignment: ruserId
-        }).catch(() => {
-          console.log("Cancelled")
-          toast.error('Changes could not be saved')
-        })
-      }}>
+      <Select.Root defaultValue={issue.assignmentId || "null"} onValueChange={assignIssue}>
           <Select.Trigger placeholder='assign to ...'/>
           <Select.Content>
               <Select.Group>
