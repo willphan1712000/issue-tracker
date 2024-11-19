@@ -5,6 +5,7 @@ import { ArrowUpIcon } from '@radix-ui/react-icons';
 import { Table } from '@radix-ui/themes';
 import NextLink from 'next/link';
 import Action from './Action';
+import { usePathname } from 'next/navigation';
 
 const IssuesPage = async ({searchParams}: { searchParams: {status: Status, orderBy: keyof Issue} }) => {
 
