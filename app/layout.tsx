@@ -5,8 +5,8 @@ import { Inter } from 'next/font/google';
 import AuthProvider from './auth/AuthProvider';
 import './globals.css';
 import NavBar from './NavBar';
-import './theme-config.css';
 import QueryClientProvider from './QueryClientProvider';
+import './theme-config.css';
 
 const inter = Inter({ 
   subsets: ['latin'],
