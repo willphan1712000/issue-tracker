@@ -4,20 +4,22 @@ import Link from 'next/link'
 import React from 'react'
 
 interface Props {
-    open: number,
-    inProgress: number,
-    closed: number
+    count: {
+        open: number,
+        inProgress: number,
+        closed: number
+    }
 }
 
-const IssueSummary = ({open, inProgress, closed}: Props) => {
+const IssueSummary = ({ count }: Props) => {
     const containers: {
         label: string,
         value: number,
         status: Status
     }[] = [
-        {label: 'Open issues', value: open, status: 'OPEN'},
-        {label: 'In Progress issues', value: open, status: 'IN_PROGRESS'},
-        {label: 'open issues', value: open, status: 'CLOSED'},
+        {label: 'Open issues', value: count.open, status: 'OPEN'},
+        {label: 'In Progress issues', value: count.inProgress, status: 'IN_PROGRESS'},
+        {label: 'open issues', value: count.closed, status: 'CLOSED'},
     ]
     return (
         <Flex gap="4">
