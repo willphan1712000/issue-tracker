@@ -37,3 +37,5 @@ next-env.d.ts
 
 #issues sql file
 issues.sql
+# Sentry Config File
+.env.sentry-build-plugin
